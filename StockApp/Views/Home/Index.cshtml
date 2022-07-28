@@ -1,0 +1,105 @@
+﻿@model StockApp.Models.OrderViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Car Parts Online</h1>
+    <p>A lot of car parts are here..</p>
+</div>
+<div class="row">
+    <div class="col-md-4" id="orderViewList">
+        <p>Get Orders With Dates</p>
+        <div id="divError">
+
+        </div>
+        <form asp-action="Sort">
+            <div class="form-group">
+                <label asp-for="StartTime" class="control-label"></label>
+                <input asp-for="StartTime" id="startTime" class="form-control" />
+                <span asp-validation-for="StartTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndTime" class="control-label"></label>
+                <input asp-for="EndTime" id="endTime" class="form-control" />
+                <span asp-validation-for="EndTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="button" onclick="SortOrder();" value="Sort" class="btn btn-primary" />
+            </div>
+        </form>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Product)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Customer)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Piece)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Total)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="fieldTBody">
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    function SortOrder() {
+        var st = $("#startTime").val();
+        var en = $("#endTime").val();
+        var url = "/Orders/ListOrdersDate?start=" + st + "&end=" + en;
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: null,
+            success: function (data) {
+                var tbody = document.getElementById("fieldTBody");
+                if (tbody.rows.length > 0) {
+                    while (tbody.rows.length > 0) {
+                        tbody.removeChild(tbody.firstChild);
+                    }
+                }
+
+                for (var i = 0; i < data.length; i++) {
+                    var tr = document.createElement("tr");
+                    var td = document.createElement("td");
+                    var text = document.createTextNode(data[i].product);
+                    td.appendChild(text);
+                    var td1 = document.createElement("td");
+                    text = document.createTextNode(data[i].customer);
+                    td1.appendChild(text);
+                    var td2 = document.createElement("td");
+                    text = document.createTextNode(data[i].piece);
+                    td2.appendChild(text);
+                    var td3 = document.createElement("td");
+                    text = document.createTextNode(data[i].orderDate);
+                    td3.appendChild(text);
+                    var td4 = document.createElement("td");
+                    text = document.createTextNode(data[i].total);
+                    td4.appendChild(text);
+                    tr.appendChild(td);
+                    tr.appendChild(td1);
+                    tr.appendChild(td2);
+                    tr.appendChild(td3);
+                    tr.appendChild(td4);
+                    document.getElementById("fieldTBody").appendChild(tr);
+                }
+            },
+            error: function (data) {
+
+            }
+        });
+    }
+</script>
