@@ -62,13 +62,7 @@ namespace StockControl.Data.Operations
                     Piece = s.Piece
 
                 }).ToList();
-                //foreach (var item in vs)
-                //{
-                //    var pro = GetProduct(item.ProductId);
-                //    var cus = GetCustomer(item.CustomerId);
-                //    item.Product = pro;
-                //    item.Customer = cus;
-                //}
+                
 
             }
             catch (Exception exc)

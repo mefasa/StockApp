@@ -14,10 +14,10 @@ namespace StockControl.Data.Context
                 serviceProvider.GetRequiredService<
                     DbContextOptions<SDbContext>>()))
             {
-                // Look for any movies.
+                
                 if (context.Customers.Any() && context.Products.Any())
                 {
-                    return;   // DB has been seeded
+                    return;   
                 }
 
                 context.Customers.AddRange(
